@@ -1,0 +1,19 @@
+playerTabFormat: "{player_nickname}"
+joinMessage: "&7{player_nickname} &r&6зашел на сервер."
+leaveMessage: "&7{player_nickname} &6вышел с сервера."
+joinNotificationsDefault: true
+joinNotificationsEnabled: true
+leaveNotificationsDefault: true
+leaveNotificationsEnabled: true
+chat: "&7{player_nickname}&f: {player_message}"
+globalChat: "&6[G] &7{player_nickname}&f: {player_message}"
+localChat: "&9[L] &7{player_nickname}&f: {player_message}"
+ifNoOneHeardTheMessage: "&cВаше сообщение никто не услышал"
+globalPrefix: "!"
+localRadius: 100
+isGlobalEnabled: true
+isChatClickable: true
+clickableType: 1
+clickableValue: "/msg {player_nickname}"
+isChatHover: true
+hoverMessage: "{player_nickname}\n&7Уровень: &6{player_level}"

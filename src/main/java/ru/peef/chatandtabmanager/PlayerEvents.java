@@ -1,0 +1,360 @@
+package ru.peef.chatandtabmanager;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
+import ru.peef.chatandtabmanager.utils.Config;
+import ru.peef.chatandtabmanager.utils.Messages;
+
+import java.util.List;
+
+public class PlayerEvents implements Listener {
+    Plugin plugin = ChatAndTabManagerBukkit.getPlugin(ChatAndTabManagerBukkit.class);
+    boolean isGlobalEnabled;
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        boolean hasJoinPermission = event.getPlayer().hasPermission("chatandtabmanager.leave_notify");
+        boolean isChatClickable = Config.readConfigBoolean("isChatClickable");
+        boolean isChatHover = Config.readConfigBoolean("isChatHover");
+        boolean leaveNotify = Config.readConfigBoolean("leaveNotificationsEnabled");
+        boolean leaveNotifyDefault = Config.readConfigBoolean("leaveNotificationsDefault");
+        String leaveMessage = Config.readConfig("leaveMessage");
+
+        if (!leaveNotifyDefault) {
+            if (hasJoinPermission && leaveNotify && !isChatClickable && !isChatHover) {
+                event.setQuitMessage(Messages.formatMessage(leaveMessage, event.getPlayer()));
+            }
+
+            if (hasJoinPermission && leaveNotify && isChatClickable && !isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (hasJoinPermission && leaveNotify && isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (hasJoinPermission && leaveNotify && !isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (!hasJoinPermission && leaveNotify) {
+                event.setQuitMessage("");
+            }
+        } else {
+            if (leaveNotify && !isChatClickable && !isChatHover) {
+                event.setQuitMessage(Messages.formatMessage(leaveMessage, event.getPlayer()));
+            }
+
+            if (leaveNotify && isChatClickable && !isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (leaveNotify && isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (leaveNotify && !isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(leaveMessage, event.getPlayer()));
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setQuitMessage("");
+            }
+
+            if (leaveNotify) {
+                event.setQuitMessage("");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        boolean hasJoinPermission = event.getPlayer().hasPermission("chatandtabmanager.join_notify");
+        boolean isChatClickable = Config.readConfigBoolean("isChatClickable");
+        boolean isChatHover = Config.readConfigBoolean("isChatHover");
+        boolean joinNotify = Config.readConfigBoolean("joinNotificationsEnabled");
+        boolean joinNotifyDefault = Config.readConfigBoolean("joinNotificationsDefault");
+        String joinMessage = Config.readConfig("joinMessage");
+
+        if (!joinNotifyDefault) {
+            if (hasJoinPermission && joinNotify && !isChatClickable && !isChatHover) {
+                event.setJoinMessage(Messages.formatMessage(joinMessage, event.getPlayer()));
+            }
+
+            if (hasJoinPermission && joinNotify && isChatClickable && !isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                Bukkit.spigot().broadcast(msg);
+                event.setJoinMessage("");
+            }
+
+            if (hasJoinPermission && joinNotify && isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setJoinMessage("");
+            }
+
+            if (hasJoinPermission && joinNotify && !isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setJoinMessage("");
+            }
+
+            if (!hasJoinPermission && joinNotify) {
+                event.setJoinMessage("");
+            }
+        } else {
+            if (joinNotify && !isChatClickable && !isChatHover) {
+                event.setJoinMessage(Messages.formatMessage(joinMessage, event.getPlayer()));
+            }
+
+            if (joinNotify && isChatClickable && !isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                Bukkit.spigot().broadcast(msg);
+                event.setJoinMessage("");
+            }
+
+            if (joinNotify && isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), event.getPlayer())));
+                }
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+                event.setJoinMessage("");
+            }
+
+            if (joinNotify && !isChatClickable && isChatHover) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(joinMessage, event.getPlayer()));
+
+                msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), event.getPlayer(), true)).create()));
+
+                Bukkit.spigot().broadcast(msg);
+
+                plugin.getLogger().info(Messages.formatMessage(joinMessage, event.getPlayer()));
+
+                event.setJoinMessage("");
+            }
+
+            if (joinNotify) {
+                event.setJoinMessage("");
+            }
+        }
+
+        event.getPlayer().setPlayerListName(Messages.formatMessage(Config.readConfig("playerTabFormat"), event.getPlayer()));
+    }
+
+    @EventHandler
+    public void onChatMessage(AsyncPlayerChatEvent event) {
+        boolean playerHear = false;
+        isGlobalEnabled = Config.readConfigBoolean("isGlobalEnabled");
+        String player_message = event.getMessage();
+        Player player = event.getPlayer();
+        if (player.hasPermission("chatandtabmanager.smiles_chat")) {
+            player_message = player_message.replace("<3", ChatColor.RED + "❤");
+            player_message = player_message.replace(":))", ChatColor.GOLD + "(◕ ‿ ◕)つ");
+            player_message = player_message.replace("->", "→");
+            player_message = player_message.replace("<-", "←");
+            player_message = player_message.replace("o/", "(◠ ◡ ◠)╱");
+        }
+        String prefix = Config.readConfig("globalPrefix");
+        String message;
+        event.setCancelled(true);
+        boolean isChatClickable = Config.readConfigBoolean("isChatClickable");
+        if (!isGlobalEnabled) {
+            String format = Config.readConfig("chat");
+            if (isChatClickable) {
+                TextComponent msg = new TextComponent(Messages.formatMessage(format, player_message, player));
+                int clickableType = Config.readConfigInteger("clickableType");
+                if (clickableType == 1) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                } else if (clickableType == 2) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                } else if (clickableType == 3) {
+                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                }
+
+                if (Config.readConfigBoolean("isChatHover")) {
+                    msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), player, true)).create()));
+                }
+
+                Bukkit.spigot().broadcast(msg);
+            } else {
+                if (Config.readConfigBoolean("isChatHover")) {
+                    TextComponent msg = new TextComponent(Messages.formatMessage(format, player_message, player));
+
+                    msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), player, true)).create()));
+
+                    Bukkit.spigot().broadcast(msg);
+                } else {
+                    plugin.getServer().broadcastMessage(Messages.formatMessage(format, player_message, player));
+                }
+            }
+        } else {
+            if (player_message.startsWith(prefix)) {
+                player_message = player_message.substring(prefix.length());
+                if (Config.readConfigBoolean("isChatClickable")) {
+                    TextComponent msg = new TextComponent(Messages.formatMessage(Config.readConfig("globalChat"), player_message, player));
+                    int clickableType = Config.readConfigInteger("clickableType");
+                    if (clickableType == 1) {
+                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                    } else if (clickableType == 2) {
+                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                    } else if (clickableType == 3) {
+                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, Messages.formatMessage(Config.readConfig("clickableValue"), player)));
+                    }
+
+                    if (Config.readConfigBoolean("isChatHover")) {
+                        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), player, true)).create()));
+                    }
+
+                    Bukkit.spigot().broadcast(msg);
+                } else {
+                    if (Config.readConfigBoolean("isChatHover")) {
+                        TextComponent msg = new TextComponent(Messages.formatMessage(Config.readConfig("globalChat"), player_message, player));
+
+                        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Messages.formatMessage(Config.readConfig("hoverMessage"), player, true)).create()));
+
+                        Bukkit.spigot().broadcast(msg);
+                    } else {
+                        plugin.getServer().broadcastMessage(Messages.formatMessage(Config.readConfig("globalChat"), player_message, player));
+                    }
+                }
+            } else {
+                String noOneHeard = Config.readConfig("ifNoOneHeardTheMessage");
+                message = Messages.formatMessage(Config.readConfig("localChat"), player_message, player);
+                List<Player> players = plugin.getServer().getWorlds().get(0).getPlayers();
+                if (players.size() == 1) {
+                    player.sendMessage(Messages.formatMessage(noOneHeard, player));
+                } else {
+                    int a = 0;
+                    while (a != players.size()) {
+                        Player currentPlayer = players.get(a);
+                        Location currentLoc = currentPlayer.getLocation();
+                        int currentPlayerX = currentLoc.getBlockX();
+                        int currentPlayerZ = currentLoc.getBlockZ();
+                        // Message sender
+                        Location playerLoc = player.getLocation();
+                        int playerX = playerLoc.getBlockX();
+                        int playerZ = playerLoc.getBlockZ();
+
+                        if (currentPlayerX - playerX == Config.readConfigInteger("localRadius") || playerX - currentPlayerX == Config.readConfigInteger("localRadius") || currentPlayerZ - playerZ == Config.readConfigInteger("localRadius") || playerZ - currentPlayerZ == Config.readConfigInteger("localRadius")) {
+                            currentPlayer.sendMessage(Messages.formatMessage(message, player));
+                            playerHear = true;
+                        }
+                        a++;
+                    }
+                    if (playerHear) {
+                        player.sendMessage(Messages.formatMessage(message, player));
+                    } else {
+                        player.sendMessage(Messages.formatMessage(noOneHeard, player));
+                    }
+                }
+            }
+        }
+    }
+}

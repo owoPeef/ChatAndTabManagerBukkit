@@ -1,0 +1,23 @@
+name: ChatAndTabManager
+version: '${version}'
+main: ru.peef.chatandtabmanager.ChatAndTabManagerBukkit
+api-version: '1.20'
+load: STARTUP
+author: Peef
+description: "Make chat and tab easily to configure"
+website: www.github.com/owoPeef/ChatAndTabManagerBukkit
+commands:
+  chatandtabmanager:
+    description: Chat and Tab manager command.
+    usage: /<command>
+    aliases: [catm, cntm, chat_and_tab_manager, cnt_manager, chat_manager]
+permissions:
+  chatandtabmanager.config_reload:
+    description: Reload plugin config.
+    default: op
+  chatandtabmanager.join_notify:
+    description: Send chat notify when player is join.
+    default: op
+  chatandtabmanager.smiles_chat:
+    description: Change symbols to smiles in chat.
+    default: op

@@ -13,6 +13,10 @@ leaveNotificationsEnabled: true
 levelProgressUncompletedColor: "&8"
 levelProgressCompletedColor: "&2"
 levelProgressHalfColor: "&a"
+# kick and ban parameters
+kickFormat: "&7{player_nickname} &cбыл кикнут по причине: {player_message}"
+banFormat: "&7{player_nickname} &c&lбыл забанен по причине: {player_message}"
+# chat parameters
 chat: "&7{player_nickname}&f: {player_message}"
 globalChat: "&6[G] &7{player_nickname}&f: {player_message}"
 localChat: "&9[L] &7{player_nickname}&f: {player_message}"

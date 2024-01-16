@@ -19,7 +19,8 @@ public class Messages {
     }
 
     public static String formatMessage(String original_message, String message, Player player) {
-        return original_message.replace("{player_message}", message)
+        return original_message
+                .replace("{player_message}", message)
                 .replace("{player_deaths}", String.valueOf(player.getStatistic(Statistic.DEATHS)))
                 .replace("{player_mobs_killed}", String.valueOf(player.getStatistic(Statistic.MOB_KILLS)))
                 .replace("{player_health}", String.valueOf(player.getHealth()))

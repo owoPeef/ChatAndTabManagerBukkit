@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +32,8 @@ public class PlayerEvents implements Listener {
         boolean isChatHover = Config.readConfigBoolean("isChatHover");
         boolean leaveNotify = Config.readConfigBoolean("leaveNotificationsEnabled");
         boolean leaveNotifyDefault = Config.readConfigBoolean("leaveNotificationsDefault");
+        boolean leaveSoundEnabled = Config.readConfigBoolean("leaveSoundEnabled");
+        String leaveSound = Config.readConfig("leaveSound");
         String leaveMessage = Config.readConfig("leaveMessage");
 
         if (!leaveNotifyDefault) {
@@ -130,6 +133,24 @@ public class PlayerEvents implements Listener {
 
             if (leaveNotify) {
                 event.setQuitMessage("");
+                if (leaveSoundEnabled) {
+                    try {
+                        List<World> worlds = plugin.getServer().getWorlds();
+                        for (World world : worlds) {
+                            List<Player> players = world.getPlayers();
+                            for (Player currPlayer : players) {
+                                currPlayer.playSound(
+                                    currPlayer.getLocation(),
+                                    Sound.valueOf(leaveSound),
+                                    1f,
+                                    1f
+                                );
+                            }
+                        }
+                    } catch (IllegalArgumentException exc) {
+                        plugin.getLogger().info("Don't found sound " + leaveSound);
+                    }
+                }
             }
         }
     }
@@ -141,6 +162,8 @@ public class PlayerEvents implements Listener {
         boolean isChatHover = Config.readConfigBoolean("isChatHover");
         boolean joinNotify = Config.readConfigBoolean("joinNotificationsEnabled");
         boolean joinNotifyDefault = Config.readConfigBoolean("joinNotificationsDefault");
+        boolean joinSoundEnabled = Config.readConfigBoolean("joinSoundEnabled");
+        String joinSound = Config.readConfig("joinSound");
         String joinMessage = Config.readConfig("joinMessage");
 
         if (!joinNotifyDefault) {
@@ -243,25 +266,45 @@ public class PlayerEvents implements Listener {
 
             if (joinNotify) {
                 event.setJoinMessage("");
+                if (joinSoundEnabled) {
+                    try {
+                        List<World> worlds = plugin.getServer().getWorlds();
+                        for (World world : worlds) {
+                            List<Player> players = world.getPlayers();
+                            for (Player currPlayer : players) {
+                                currPlayer.playSound(
+                                    currPlayer.getLocation(),
+                                    Sound.valueOf(joinSound),
+                                    1f,
+                                    1f
+                                );
+                            }
+                        }
+                    } catch (IllegalArgumentException exc) {
+                        plugin.getLogger().info("Don't found sound " + joinSound);
+                    }
+                }
             }
         }
 
         event.getPlayer().setPlayerListName(Messages.formatMessage(Config.readConfig("playerTabFormat"), event.getPlayer()));
     }
 
+    // TODO: При упоминании ника производить звук (с поддержкой конфига)
     @EventHandler
     public void onChatMessage(AsyncPlayerChatEvent event) {
         boolean playerHear = false;
         isGlobalEnabled = Config.readConfigBoolean("isGlobalEnabled");
         String player_message = event.getMessage();
         Player player = event.getPlayer();
-        if (player.hasPermission("chatandtabmanager.smiles_chat")) {
-            player_message = player_message.replace("<3", ChatColor.RED + "❤");
-            player_message = player_message.replace(":))", ChatColor.GOLD + "(◕ ‿ ◕)つ");
-            player_message = player_message.replace("->", "→");
-            player_message = player_message.replace("<-", "←");
-            player_message = player_message.replace("o/", "(◠ ◡ ◠)╱");
-        }
+
+        player_message = player_message
+                .replace("<3", ChatColor.RED + "❤")
+                .replace(":))", ChatColor.GOLD + "(◕ ‿ ◕)つ")
+                .replace("->", "→")
+                .replace("<-", "←")
+                .replace("o/", "(◠ ◡ ◠)╱");
+
         String prefix = Config.readConfig("globalPrefix");
         String message;
         event.setCancelled(true);

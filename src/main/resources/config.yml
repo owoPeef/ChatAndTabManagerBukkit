@@ -1,10 +1,18 @@
 playerTabFormat: "{player_nickname}"
 joinMessage: "&7{player_nickname} &r&6зашел на сервер."
 leaveMessage: "&7{player_nickname} &6вышел с сервера."
+joinSoundEnabled: false
+joinSound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+leaveSoundEnabled: false
+leaveSound: "ENTITY_EXPERIENCE_ORB_PICKUP"
 joinNotificationsDefault: true
 joinNotificationsEnabled: true
 leaveNotificationsDefault: true
 leaveNotificationsEnabled: true
+# level progress
+levelProgressUncompletedColor: "&8"
+levelProgressCompletedColor: "&2"
+levelProgressHalfColor: "&a"
 chat: "&7{player_nickname}&f: {player_message}"
 globalChat: "&6[G] &7{player_nickname}&f: {player_message}"
 localChat: "&9[L] &7{player_nickname}&f: {player_message}"

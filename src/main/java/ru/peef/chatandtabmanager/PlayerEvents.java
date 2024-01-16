@@ -331,9 +331,6 @@ public class PlayerEvents implements Listener {
 
                 World playerWorld = player.getWorld();
                 List<Player> players = playerWorld.getPlayers();
-                plugin.getLogger().info(
-                        String.format("Player %s in %s:{ONLINE>>>%s}", player.getName(), playerWorld.getName(), players.size())
-                );
                 if (players.size() == 1) {
                     player.sendMessage(Messages.formatMessage(noOneHeard, player));
                 } else {
@@ -363,16 +360,6 @@ public class PlayerEvents implements Listener {
                                 currentPlayer.sendMessage(Messages.formatMessage(message, player));
                                 playerHear = true;
                             }
-                            plugin.getLogger().info(String.format(
-                                    "Player %s, distance (X%s, X%s, Z%s, Z%s), configLocalRadius: %s, playerHear: %s",
-                                    currentPlayer.getName(),
-                                    curPlayerX_playerX,
-                                    playerX_curPlayerX,
-                                    curPlayerZ_playerZ,
-                                    playerZ_curPlayerZ,
-                                    localRadius,
-                                    playerHear
-                            ));
                         }
                         a++;
                     }

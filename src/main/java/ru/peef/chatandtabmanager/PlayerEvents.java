@@ -31,7 +31,8 @@ public class PlayerEvents implements Listener {
         if (event.getPlayer().isBanned()) {
             for (World world : plugin.getServer().getWorlds()) {
                 for (Player player : world.getPlayers()) {
-                    player.sendMessage(Messages.formatMessage(Config.readConfig("banFormat"), "Пример", player));
+                    player.sendMessage(Messages.formatMessage(Config.readConfig("banFormat"), "Пример", event.getPlayer()));
+
                 }
             }
         } else {
@@ -429,7 +430,7 @@ public class PlayerEvents implements Listener {
     public void onKick(PlayerKickEvent event) {
         for (World world : plugin.getServer().getWorlds()) {
             for (Player player : world.getPlayers()) {
-                player.sendMessage(Messages.formatMessage(Config.readConfig("kickFormat"), event.getReason(), player));
+                player.sendMessage(Messages.formatMessage(Config.readConfig("kickFormat"), event.getReason(), event.getPlayer()));
             }
         }
     }

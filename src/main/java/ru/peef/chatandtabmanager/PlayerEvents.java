@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -327,24 +328,51 @@ public class PlayerEvents implements Listener {
             } else {
                 String noOneHeard = Config.readConfig("ifNoOneHeardTheMessage");
                 message = Messages.formatMessage(Config.readConfig("localChat"), player_message, player);
-                List<Player> players = plugin.getServer().getWorlds().get(0).getPlayers();
+
+                World playerWorld = player.getWorld();
+                List<Player> players = playerWorld.getPlayers();
+                plugin.getLogger().info(
+                        String.format("Player %s in %s:{ONLINE>>>%s}", player.getName(), playerWorld.getName(), players.size())
+                );
                 if (players.size() == 1) {
                     player.sendMessage(Messages.formatMessage(noOneHeard, player));
                 } else {
                     int a = 0;
                     while (a != players.size()) {
                         Player currentPlayer = players.get(a);
-                        Location currentLoc = currentPlayer.getLocation();
-                        int currentPlayerX = currentLoc.getBlockX();
-                        int currentPlayerZ = currentLoc.getBlockZ();
-                        // Message sender
-                        Location playerLoc = player.getLocation();
-                        int playerX = playerLoc.getBlockX();
-                        int playerZ = playerLoc.getBlockZ();
+                        if (currentPlayer != player) {
+                            Location currentLoc = currentPlayer.getLocation();
+                            int currentPlayerX = currentLoc.getBlockX();
+                            int currentPlayerZ = currentLoc.getBlockZ();
+                            // Message sender
+                            Location playerLoc = player.getLocation();
+                            int playerX = playerLoc.getBlockX();
+                            int playerZ = playerLoc.getBlockZ();
 
-                        if (currentPlayerX - playerX == Config.readConfigInteger("localRadius") || playerX - currentPlayerX == Config.readConfigInteger("localRadius") || currentPlayerZ - playerZ == Config.readConfigInteger("localRadius") || playerZ - currentPlayerZ == Config.readConfigInteger("localRadius")) {
-                            currentPlayer.sendMessage(Messages.formatMessage(message, player));
-                            playerHear = true;
+                            int localRadius = Config.readConfigInteger("localRadius");
+
+                            int curPlayerX_playerX = currentPlayerX - playerX;
+                            int playerX_curPlayerX = playerX - currentPlayerX;
+                            int curPlayerZ_playerZ = currentPlayerZ - playerZ;
+                            int playerZ_curPlayerZ = playerZ - currentPlayerZ;
+
+                            if ((curPlayerX_playerX <= localRadius && curPlayerX_playerX >= 0) ||
+                                (playerX_curPlayerX <= localRadius && playerX_curPlayerX >= 0) ||
+                                (curPlayerZ_playerZ <= localRadius && curPlayerZ_playerZ >= 0) ||
+                                (playerZ_curPlayerZ <= localRadius && playerZ_curPlayerZ >= 0)) {
+                                currentPlayer.sendMessage(Messages.formatMessage(message, player));
+                                playerHear = true;
+                            }
+                            plugin.getLogger().info(String.format(
+                                    "Player %s, distance (X%s, X%s, Z%s, Z%s), configLocalRadius: %s, playerHear: %s",
+                                    currentPlayer.getName(),
+                                    curPlayerX_playerX,
+                                    playerX_curPlayerX,
+                                    curPlayerZ_playerZ,
+                                    playerZ_curPlayerZ,
+                                    localRadius,
+                                    playerHear
+                            ));
                         }
                         a++;
                     }

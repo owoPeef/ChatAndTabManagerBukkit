@@ -313,7 +313,13 @@ public class PlayerEvents implements Listener {
                 .replace(":))", ChatColor.GOLD + "(◕ ‿ ◕)つ")
                 .replace("->", "→")
                 .replace("<-", "←")
-                .replace("o/", "(◠ ◡ ◠)╱");
+                .replace("o/", "(◠ ◡ ◠)╱")
+                .replace(":skull:", "☠")
+                .replace(":victory_sign:", "✌")
+                .replace(":shy:", "☞☜")
+                .replace(":check_mark:", "✔")
+                .replace(":ussr:", "☭")
+                .replace(":cross:", "✝");
 
         String prefix = Config.readConfig("globalPrefix");
         String message;
@@ -406,9 +412,9 @@ public class PlayerEvents implements Listener {
                             int curPlayerZ_playerZ = currentPlayerZ - playerZ;
                             int playerZ_curPlayerZ = playerZ - currentPlayerZ;
 
-                            if ((curPlayerX_playerX <= localRadius && curPlayerX_playerX >= 0) ||
+                            if ((curPlayerX_playerX <= localRadius && curPlayerX_playerX >= 0) &&
                                 (playerX_curPlayerX <= localRadius && playerX_curPlayerX >= 0) ||
-                                (curPlayerZ_playerZ <= localRadius && curPlayerZ_playerZ >= 0) ||
+                                (curPlayerZ_playerZ <= localRadius && curPlayerZ_playerZ >= 0) &&
                                 (playerZ_curPlayerZ <= localRadius && playerZ_curPlayerZ >= 0)) {
                                 currentPlayer.sendMessage(Messages.formatMessage(message, player));
                                 playerHear = true;
